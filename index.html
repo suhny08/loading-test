@@ -4,26 +4,7 @@
     <meta charset="UTF-8">
     <title>WebP Support Test</title>
     <style>
-        .webp .test-image {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/e/e9/Felis_silvestris_silvestris_small_gradual_decrease_of_quality.webp');
-            width: 300px;
-            height: 200px;
-            border: 2px solid blue;
-        }
         
-        .no-webp .test-image {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_silvestris_silvestris.jpg');
-            width: 300px;
-            height: 200px;
-            border: 2px solid red;
-        }
-
-        .support-status {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
         .loading {
             display: none;
             width: 300px;
@@ -57,6 +38,12 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        /* 페이지 로딩 */
+    .ui-loading{position:fixed;left:0;right:0;top:0;bottom:0;z-index: 2000;background-color: rgba(255, 255, 255, 0.3);}
+    .ui-loading>em{position:absolute;top:50%;left:50%;margin-left:-20rem;margin-top:-20rem;width:40rem;height:40rem;padding:0rem;overflow:hidden;display:block;box-sizing:border-box;font-size: 0;}
+    .ui-loading>em:after{content:"";display:inline-block;background: url("/loading-test/assets/loading-IyJwKUXB.gif") no-repeat;width: 40rem;height: 40rem;background-size:100% auto;}
+
     </style>
 </head>
 <body>
@@ -90,14 +77,20 @@ function checkWebP() {
 }
 
 function startLoadingGIF() {
-  
+  /*
   document.documentElement.classList.add('no-webp');
   document.querySelector('.loading').classList.add('show');
+  */
 
+  const div = document.createElement("template");
+  div.innerHTML = `<div class="ui-loading" role="dialog"><b class="blind">로딩중...</b><em></em></div>`; 
+  document.body.prepend(div.content.firstElementChild);
+  //document.body.prepend(`<div class="ui-loading" role="dialog"><b class="blind">로딩중...</b><em></em></div>`);
   setTimeout(function() {
-      document.querySelector('.content').classList.remove('hide');
-      checkWebP();
-  }, 3000);
+      window.location.href = "next.html";
+  }, 2000);
+  
+
 }
 
 function startLoadingWEBP() {
@@ -107,7 +100,7 @@ function startLoadingWEBP() {
 
   setTimeout(function() {
       document.querySelector('.content').classList.remove('hide');
-      checkWebP();
+      window.location.href = "next.html";
   }, 3000);
 }
 
