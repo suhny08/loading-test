@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>WebP Support Test</title>
+    <style>
+        .webp .test-image {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/e/e9/Felis_silvestris_silvestris_small_gradual_decrease_of_quality.webp');
+            width: 300px;
+            height: 200px;
+            border: 2px solid blue;
+        }
+        
+        .no-webp .test-image {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_silvestris_silvestris.jpg');
+            width: 300px;
+            height: 200px;
+            border: 2px solid red;
+        }
+
+        .support-status {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            width: 300px;
+            height: 200px;
+            background: #f0f0f0;
+            border: 2px solid #ccc;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        /* WebP 지원여부에 따른 로딩 이미지 설정 */
+        .webp .loading-image {
+            content: url('/loading.webp');
+        }
+        
+        .no-webp .loading-image {
+            content: url('/loading.gif');
+        }
+
+        .content.hide {
+            display: none;
+        }
+
+        button {
+            margin: 20px 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="startLoadingGIF()">get gif</button>
+    <button onclick="startLoadingWEBP()">get webp</button>
+
+    <div class="content">
+        <h3>테스트</h3>
+        <div class="test-image"></div>
+        <div class="support-status"></div>
+    </div>
+
+    <div class="loading">
+        <img class="loading-image" alt="Loading..." width="50" height="50">
+    </div>
+    <script>
+
+function checkWebP() {
+  var img = new Image();
+  img.onload = function() {
+      document.documentElement.classList.add('webp');
+      document.querySelector('.support-status').textContent = 
+          '이 브라우저는 지원합니다! (테두리가 파란색으로 표시됩니다)';
+  };
+  img.onerror = function() {
+      document.documentElement.classList.add('no-webp');
+      document.querySelector('.support-status').textContent = 
+          '이 브라우저는 지원하지 않습니다. (테두리가 빨간색으로 표시됩니다)';
+  };
+  img.src = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+}
+
+function startLoadingGIF() {
+  
+  document.documentElement.classList.add('no-webp');
+  document.querySelector('.loading').classList.add('show');
+
+  setTimeout(function() {
+      document.querySelector('.content').classList.remove('hide');
+      checkWebP();
+  }, 3000);
+}
+
+function startLoadingWEBP() {
+  
+  document.documentElement.classList.add('webp');
+  document.querySelector('.loading').classList.add('show');
+
+  setTimeout(function() {
+      document.querySelector('.content').classList.remove('hide');
+      checkWebP();
+  }, 3000);
+}
+
+// 페이지 로드시 WebP 체크 먼저 실행
+// checkWebP();
+
+// 그 다음 컨텐츠를 숨기고 로딩 표시
+// document.querySelector('.content').classList.add('hide');
+// document.querySelector('.loading').classList.add('show');
+    </script>
+</body>
+</html>
